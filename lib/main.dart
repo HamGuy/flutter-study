@@ -48,8 +48,9 @@ class MyHomePage extends StatefulWidget {
 
 enum ScoreWidgetStatus {
   HIDDEN,
-  BECOMING_VISIABLE,
-  BECOMING_INVISABLE,
+  BECOMING_VISIBLE,
+  VISIBLE,
+  BECOMING_INVISBLE,
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
@@ -61,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   Random random;
 
 
-  final duration = new Duration(milliseconds: 300);
+  final duration = new Duration(milliseconds: 400);
   
   AnimationController scoreInAnimationController;
   AnimationController scoreOutAnimationController;
@@ -138,13 +139,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       scoreOutTimer.cancel();
     }
 
-    if(_scoreWidgetStatus == ScoreWidgetStatus.BECOMING_INVISABLE) {
+    if(_scoreWidgetStatus == ScoreWidgetStatus.BECOMING_INVISBLE) {
       scoreSizeAnimationController.stop(canceled: true);
-      _scoreWidgetStatus = ScoreWidgetStatus.BECOMING_VISIABLE;
+      _scoreWidgetStatus = ScoreWidgetStatus.VISIBLE;
     } 
     else if(_scoreWidgetStatus == ScoreWidgetStatus.HIDDEN) {
       scoreInAnimationController.forward(from: 0.0);  
-      _scoreWidgetStatus = ScoreWidgetStatus.BECOMING_VISIABLE;
+      _scoreWidgetStatus = ScoreWidgetStatus.BECOMING_VISIBLE;
     }
     increamentCounter(null);
     holderTimer = new Timer.periodic(duration, increamentCounter);
@@ -153,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   void onTapUp(TapUpDetails tap) {
     scoreOutTimer = new Timer(duration, (){
       scoreOutAnimationController.forward(from: 0.0);
-      _scoreWidgetStatus = ScoreWidgetStatus.BECOMING_INVISABLE;
+      _scoreWidgetStatus = ScoreWidgetStatus.BECOMING_INVISBLE;
     });
     holderTimer.cancel();
   }
@@ -162,6 +163,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   Widget getScoreButton(){
     var scorePosition = 0.0;
     var scoreOpacoity = 0.0;
+    var extraSize = 0.0;
     var stackChildren = <Widget>[];
 
     var firstAngle = _sparksAngel;
@@ -171,30 +173,30 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     switch(_scoreWidgetStatus){
       case ScoreWidgetStatus.HIDDEN:
       break;
-      case ScoreWidgetStatus.BECOMING_VISIABLE:
+      case ScoreWidgetStatus.BECOMING_VISIBLE:
       scorePosition = scoreInAnimationController.value * 100;
       scoreOpacoity = scoreInAnimationController.value;
+      extraSize = scoreSizeAnimationController.value * 10;
       break;
-      case ScoreWidgetStatus.BECOMING_INVISABLE:
+      case ScoreWidgetStatus.BECOMING_INVISBLE:
+      case ScoreWidgetStatus.VISIBLE:
       scorePosition = scoreOutPositionAnimation.value;
       scoreOpacoity = 1- scoreOutAnimationController.value;
       break;
     }
-    double extraSize = scoreSizeAnimationController.value * 10;
 
     for (var i = 0; i < 5; i++) {
-      // var currentAngel = firstAngle + (2*pi)/5*(i);
       var currentAngle = (firstAngle + ((2*pi)/5)*(i));
-      var sparkleWiget = new Positioned(
-        child: new Transform.rotate(
+      var sparkleWiget =
+       new Positioned(child: new Transform.rotate(
           angle: currentAngle - pi/2, 
           child: new Opacity(
             opacity: sparklesOpacity,
             child: new Image.asset("images/sparkles.png", width: 14.0, height: 14.0),
           )
         ),
-        left: (sparkleRadius * cos(currentAngle)) + 10,
-        right: (sparkleRadius * sin(currentAngle)) + 10,
+        left: (sparkleRadius * cos(currentAngle)) + 20,
+        top: (sparkleRadius * sin(currentAngle)) + 20,
       );
       stackChildren.add(sparkleWiget);
     }
