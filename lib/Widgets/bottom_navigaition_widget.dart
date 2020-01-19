@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:medium_clap_animation/page/category_page_widget.dart';
-import 'package:medium_clap_animation/page/home_page_widget.dart';
-import 'package:medium_clap_animation/page/message_page_widget.dart';
-import 'package:medium_clap_animation/page/settings_page_widget.dart';
+import 'package:medium_clap_animation/page/common_page_widget.dart';
 
 class BottomNavigationWidget extends StatefulWidget {
   @override
@@ -18,10 +15,10 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   @override
   void initState(){
     list
-        ..add(HomePage(title: 'Home',))
-        ..add(CategoryPage(title: 'Category',))
-        ..add(MessagePage(title: 'Message',))
-        ..add(SettingsPage(title: 'Setting',));
+        ..add(CommonPage(title: 'Home',))
+        ..add(CommonPage(title: 'Category',))
+        ..add(CommonPage(title: 'Message',))
+        ..add(CommonPage(title: 'Setting',));
 
     super.initState();
   }
