@@ -50,9 +50,11 @@ class _HomeListState extends State<HomeList>  with TickerProviderStateMixin {
       _selectedIndex = targeyIndex;
     });
 
-    Navigator.push(context, MaterialPageRoute(builder: (context){
-              return PostDetailPage(post: _posts[index],);
-            }));
+    Navigator.of(context).pushNamed('post_detail', arguments: _posts[index]);
+
+    // Navigator.push(context, MaterialPageRoute(builder: (context){
+    //           return PostDetailPage(post: _posts[index],);
+    //         }));
   }
 
 
