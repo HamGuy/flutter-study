@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:medium_clap_animation/Widgets/home_list_widget.dart';
 import 'package:medium_clap_animation/page/common_page_widget.dart';
 
 class BottomNavigationWidget extends StatefulWidget {
@@ -15,11 +16,10 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   @override
   void initState(){
     list
-        ..add(CommonPage(title: 'Home',))
+        ..add(CommonPage(title: 'Home', body: HomeList(), ))
         ..add(CommonPage(title: 'Category',))
         ..add(CommonPage(title: 'Message',))
         ..add(CommonPage(title: 'Setting',));
-
     super.initState();
   }
 
