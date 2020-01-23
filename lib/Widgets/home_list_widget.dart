@@ -11,6 +11,7 @@ class HomeList extends StatefulWidget {
 class _HomeListState extends State<HomeList> {
   List<Post> _posts;
   int _selectedIndex = -1;
+  bool _loading = true;
 
   @override
   void initState() {
@@ -25,6 +26,7 @@ class _HomeListState extends State<HomeList> {
       if (error == null) {
         setState(() {
           _posts = list.cast<Post>();
+          _loading = false;
         });
       } else {
 
@@ -41,6 +43,11 @@ class _HomeListState extends State<HomeList> {
   @override
   Widget build(BuildContext context) {
 
+    if(this._loading){
+      return Center(child: CircularProgressIndicator(),);
+    }
+
+
     int length = 0;
     if(_posts != null) {
       length = _posts.length;
@@ -55,13 +62,13 @@ class _HomeListState extends State<HomeList> {
             handleTap(index);
           },
           child: Container(
-            color: _selectedIndex == index ? Colors.red : Colors.white,
+            color: _selectedIndex == index ? Colors.lightBlue : Colors.white,
           padding: EdgeInsets.only(bottom: 5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(_posts[index].title,style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-              Text(_posts[index].body, style: TextStyle(fontSize: 12, color: Colors.red)),
+              Text(_posts[index].body, style: TextStyle(fontSize: 12, color: Colors.black)),
               Divider(color: Color(0xffffccff), height: 1.0, indent: 15, endIndent: 0),
             ],
           ),
