@@ -8,14 +8,22 @@ class HomeList extends StatefulWidget {
   _HomeListState createState() => _HomeListState();
 }
 
-class _HomeListState extends State<HomeList> {
+class _HomeListState extends State<HomeList>  with TickerProviderStateMixin {
   List<Post> _posts;
   int _selectedIndex = -1;
   bool _loading = true;
+  AnimationController _fadeInAnimation;
+  Duration _duration = Duration(milliseconds: 1000);
 
   @override
   void initState() {
     _posts = [];
+
+    _fadeInAnimation = AnimationController(duration: _duration, vsync: this);
+    _fadeInAnimation.addListener((){
+      setState(() { });
+    });
+
     super.initState();
     requestData();
   }
@@ -28,6 +36,7 @@ class _HomeListState extends State<HomeList> {
           _posts = list.cast<Post>();
           _loading = false;
         });
+        _fadeInAnimation.forward(from: 0);
       } else {
 
       }
@@ -53,7 +62,9 @@ class _HomeListState extends State<HomeList> {
       length = _posts.length;
     }
 
-    return ListView.builder(
+    final opactiveValue = _fadeInAnimation.value;
+
+    return Opacity(opacity: opactiveValue, child: ListView.builder(
       padding: EdgeInsets.all(6),
       itemCount: length,
       itemBuilder: (BuildContext context, int index){
@@ -74,6 +85,6 @@ class _HomeListState extends State<HomeList> {
           ),
         ));
       },
-    );
+    ),);
   }
 }
