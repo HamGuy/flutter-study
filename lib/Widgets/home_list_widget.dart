@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medium_clap_animation/page/post_detail_page.dart';
 
 import '../network_helper.dart';
 import '../post.dart';
@@ -43,11 +44,17 @@ class _HomeListState extends State<HomeList>  with TickerProviderStateMixin {
     });
   }
 
-  void handleTap(index) {
+  void handleTap(BuildContext context, int index) {
+    final targeyIndex = _selectedIndex == index ? -1 : index;;
     setState(() {
-      _selectedIndex = _selectedIndex == index ? -1 : index;
+      _selectedIndex = targeyIndex;
     });
+
+    Navigator.push(context, MaterialPageRoute(builder: (context){
+              return PostDetailPage(post: _posts[index],);
+            }));
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -70,10 +77,10 @@ class _HomeListState extends State<HomeList>  with TickerProviderStateMixin {
       itemBuilder: (BuildContext context, int index){
         return GestureDetector(
           onTapDown: (tap){
-            handleTap(index);
+            handleTap(context,index);
           },
           child: Container(
-            color: _selectedIndex == index ? Colors.lightBlue : Colors.white,
+            color: Colors.white,
           padding: EdgeInsets.only(bottom: 5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
